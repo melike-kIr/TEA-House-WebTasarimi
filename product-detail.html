@@ -62,90 +62,61 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-// --- LOCAL STORAGE'DAN VERİ ÇEKME FONKSİYONLARI ---
+    const container = document.getElementById("productDetailContainer");
 
-// Local Storage'dan tüm ürünleri çeken fonksiyon
-function getProducts() {
-    // Ürün yönetim sayfanızdaki anahtarın 'products' olduğunu varsayıyoruz.
-    const productsJSON = localStorage.getItem('products'); 
-    return productsJSON ? JSON.parse(productsJSON) : [];
-}
+    // URL'den productId al
+    const productId = new URLSearchParams(window.location.search).get("productId");
 
-// URL'den parametre okuyan yardımcı fonksiyon
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
-
-
-// --- ÜRÜN DETAYINI YÜKLEME İŞLEVİ ---
-function loadProductDetail() {
-    const container = document.getElementById('productDetailContainer');
-    // Sayfa yüklendiğinde, sadece ID bazlı aramayı kullanmak en güvenlisidir.
-    const productIdFromUrl = getUrlParameter('productId'); 
-    
-    if (!productIdFromUrl) {
-        container.innerHTML = '<div class="col-12 text-center alert alert-danger">Hata: Ürün ID\'si URL\'de bulunamadı. Lütfen ürün linkini kontrol edin.</div>';
+    if (!productId) {
+        container.innerHTML = `<div class="alert alert-danger">Ürün ID bulunamadı!</div>`;
         return;
     }
 
-    const productId = parseInt(productIdFromUrl);
-    const allProducts = getProducts(); 
-    
-    // ID ile eşleşen ürünü bul
-    const product = allProducts.find(p => p.id === productId);
+    // 1) JSON ürünlerini yükle
+    fetch("products.json")
+        .then(res => res.json())
+        .then(jsonProducts => {
 
-    if (!product) {
-        container.innerHTML = `<div class="col-12 text-center alert alert-warning">Üzgünüz, ID ${productId} olan ürün sistemde bulunamadı.</div>`;
-        return;
-    }
+            // 2) Admin'in eklediği ürünleri al
+            const adminProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-    // 4. HTML içeriğini oluştur
-    // Not: Ürün yönetim sisteminizdeki tüm alanlar (category, rating vb.) varsayılan olarak null/boş gelebilir.
-    const detailHTML = `
-        <div class="col-md-6 mb-4 wow fadeIn" data-wow-delay="0.1s">
-            <div class="product-image-container">
-                <img src="${product.image}" class="img-fluid rounded" alt="${product.name}" style="max-height: 450px; object-fit: contain;">
-            </div>
-        </div>
-        <div class="col-md-6 wow fadeIn" data-wow-delay="0.3s">
-            <h1 class="display-5 fw-bold text-dark">${product.name}</h1>
-            
-            <p class="fs-4 text-primary mt-3">${product.price.toFixed(2)} ₺</p>
-            
-            <hr>
+            // 3) JSON + Admin ürünlerini birleştir
+            const allProducts = [...jsonProducts, ...adminProducts];
 
-            <p class="lead text-body">${product.description}</p>
-            
-            <div class="d-flex align-items-center mb-3">
-                <span class="badge bg-secondary me-3">Kategori: ${product.category || 'Belirtilmemiş'}</span>
-                <span class="badge ${product.stock > 0 ? 'bg-success' : 'bg-danger'}">Stok: ${product.stock} adet</span>
-            </div>
-            
-            ${product.rating ? `<div class="mb-3">
-                <i class="bi bi-star-fill text-warning"></i> ${product.rating} / 5
-            </div>` : ''}
+            // 4) Doğru ürünü bul
+            const product = allProducts.find(p => p.productId == productId);
 
-            <button 
-                class="btn btn-primary btn-lg mt-3 add-to-cart"
-                data-name="${product.name}"
-                data-price="${product.price}"
-                data-image="${product.image}"
-                ${product.stock <= 0 ? 'disabled' : ''}>
-                <i class="bi bi-cart-plus me-2"></i> ${product.stock > 0 ? 'Sepete Ekle' : 'Stokta Yok'}
-            </button>
-        </div>
-    `;
+            if (!product) {
+                container.innerHTML = `<div class="alert alert-warning">Ürün bulunamadı.</div>`;
+                return;
+            }
 
-    container.innerHTML = detailHTML;
-}
+            // 5) Ürün detayını ekrana bas
+            container.innerHTML = `
+                <div class="col-md-6">
+                    <img src="${product.image}" class="img-fluid rounded" alt="${product.name}">
+                </div>
 
-// Sayfa yüklendiğinde detayları yükle
-document.addEventListener('DOMContentLoaded', loadProductDetail);
+                <div class="col-md-6">
+                    <h1 class="display-5">${product.name}</h1>
+                    <h3 class="text-primary mt-3">${product.price} ₺</h3>
+
+                    <p class="mt-4">${product.description}</p>
+
+                    <button class="btn btn-primary btn-lg mt-3 add-to-cart"
+                        data-name="${product.name}"
+                        data-price="${product.price}"
+                        data-image="${product.image}">
+                        <i class="bi bi-cart-plus me-2"></i> Sepete Ekle
+                    </button>
+                </div>
+            `;
+        });
+});
 </script>
+
 
     <script>
     fetch("navbar.html")

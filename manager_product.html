@@ -71,104 +71,100 @@
     <div id="productList"></div>
 </div>
 
+
 <script>
-// --- LOCAL STORAGE FONKSİYONLARI ---
-
+// =============================
+// LOCAL STORAGE FONKSİYONLARI
+// =============================
 function getProducts() {
-    const productsJSON = localStorage.getItem('products');
-    return productsJSON ? JSON.parse(productsJSON) : [];
+    const data = localStorage.getItem("products");
+    return data ? JSON.parse(data) : [];
 }
 
-function saveProducts(products) {
-    localStorage.setItem('products', JSON.stringify(products));
+function saveProducts(list) {
+    localStorage.setItem("products", JSON.stringify(list));
 }
 
-// --- ÜRÜN EKLEME / GÜNCELLEME FONKSİYONU ---
-
+// =============================
+// ÜRÜN EKLEME / GÜNCELLEME
+// =============================
 function createProduct(name, price, category, image, description, stock) {
 
     let products = getProducts();
+    const editId = document.getElementById("productId").value;
 
-    // Eğer düzenleme yapılıyorsa ID al
-    const editId = document.getElementById('productId').value;
-
-    // -------------------------
-    // ÜRÜN NESNESİ OLUŞTURMA
-    // -------------------------
-
+    // ÜRÜN OBJE ŞABLONU → ARTIK KESİNLİKLE productId!
     let product = {
-        id: editId ? Number(editId) : Date.now(),   // ID HER ZAMAN id OLMALI
-        name: name,
+        productId: editId ? Number(editId) : Date.now(),   // TEK TİP ID
+        name,
         price: Number(price),
-        category: category,
-        image: image,
-        description: description,
+        category,
+        image,
+        description,
         stock: Number(stock)
     };
 
-    // -------------------------
-    // GÜNCELLEME Mİ, EKLEME Mİ?
-    // -------------------------
-
     if (editId) {
-        // var olan ürünü güncelle
-        const index = products.findIndex(p => p.id == editId);
+        // GÜNCELLEME
+        const index = products.findIndex(p => p.productId == editId);
         products[index] = product;
 
-        document.getElementById('messageArea').innerHTML =
+        document.getElementById("messageArea").innerHTML =
             `<div class="alert alert-success">Ürün başarıyla güncellendi.</div>`;
 
-        document.getElementById('saveButton').innerText = "Ürünü Kaydet";
-    } 
-    else {
-        // yeni ürün ekleme
+        document.getElementById("saveButton").innerText = "Ürünü Kaydet";
+    } else {
+        // EKLEME
         products.push(product);
 
-        document.getElementById('messageArea').innerHTML =
+        document.getElementById("messageArea").innerHTML =
             `<div class="alert alert-success">"${name}" başarıyla eklendi.</div>`;
     }
 
     saveProducts(products);
 
-    // Form sıfırlansın
-    document.getElementById('productCreatorForm').reset();
-    document.getElementById('productId').value = ""; // düzenleme ID’si temizle
+    // FORM TEMİZLE
+    document.getElementById("productCreatorForm").reset();
+    document.getElementById("productId").value = "";
 
     renderProductList();
 }
 
-
-// --- ÜRÜN LİSTELEME ---
-
+// =============================
+// ÜRÜNLERİ LİSTELEME
+// =============================
 function renderProductList() {
-    const products = getProducts();
-    const listArea = document.getElementById('productList');
+    const list = getProducts();
+    const area = document.getElementById("productList");
 
-    if (products.length === 0) {
-        listArea.innerHTML = '<div class="alert alert-info">Henüz ürün eklenmedi.</div>';
+    if (list.length === 0) {
+        area.innerHTML = `<div class="alert alert-info">Henüz ürün eklenmedi.</div>`;
         return;
     }
 
     let html = `<div class="row g-4">`;
 
-    products.forEach(p => {
+    list.forEach(p => {
         html += `
         <div class="col-md-4">
             <div class="card shadow-sm border-0">
-                <img src="${p.image}" class="card-img-top" style="height: 220px; object-fit: contain;">
+                <img src="${p.image}" class="card-img-top" style="height:220px; object-fit:contain;">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">${p.name}</h5>
                     <p class="card-text text-muted">${p.price} ₺</p>
                     <span class="badge bg-secondary mb-2">Stok: ${p.stock}</span>
 
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="product-detail.html?productId=${p.id}" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-eye"></i> Detay
+                        <a href="product-detail.html?productId=${p.productId}" 
+                           class="btn btn-sm btn-outline-primary">
+                           <i class="bi bi-eye"></i> Detay
                         </a>
-                        <button class="btn btn-sm btn-warning" onclick="editProduct(${p.id})">
+
+                        <button class="btn btn-sm btn-warning" onclick="editProduct(${p.productId})">
                             <i class="bi bi-pencil"></i> Düzenle
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.id})">
+
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.productId})">
                             <i class="bi bi-trash"></i> Sil
                         </button>
                     </div>
@@ -178,26 +174,29 @@ function renderProductList() {
     });
 
     html += `</div>`;
-    listArea.innerHTML = html;
+    area.innerHTML = html;
 }
 
-
-// --- ÜRÜN SİLME ---
+// =============================
+// ÜRÜN SİLME
+// =============================
 function deleteProduct(id) {
-    if (!confirm("Bu ürünü silmek istediğine emin misin?")) return;
+    if (!confirm("Bu ürünü silmek istediğine emin misiniz?")) return;
 
-    let products = getProducts();
-    products = products.filter(p => p.id !== id);
-    saveProducts(products);
+    let list = getProducts();
+    list = list.filter(p => p.productId !== id);
+
+    saveProducts(list);
     renderProductList();
 }
 
-
-// --- ÜRÜN DÜZENLEME ---
+// =============================
+// ÜRÜN DÜZENLEME
+// =============================
 function editProduct(id) {
-    const p = getProducts().find(x => x.id === id);
+    const p = getProducts().find(x => x.productId === id);
 
-    document.getElementById("productId").value = p.id;
+    document.getElementById("productId").value = p.productId;
     document.getElementById("productName").value = p.name;
     document.getElementById("productPrice").value = p.price;
     document.getElementById("productCategory").value = p.category;
@@ -208,8 +207,9 @@ function editProduct(id) {
     document.getElementById("saveButton").innerText = "Ürünü Güncelle";
 }
 
-
-// --- FORM SUBMIT ---
+// =============================
+// FORM SUBMIT
+// =============================
 document.addEventListener("DOMContentLoaded", () => {
 
     renderProductList();
@@ -227,7 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
         createProduct(name, price, category, image, description, stock);
     });
 });
-
 </script>
+
+
 </body>
 </html>

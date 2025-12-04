@@ -92,16 +92,16 @@ function createProduct(name, price, category, image, description, stock) {
         ? Math.max(...products.map(p => p.id)) + 1 
         : 1;
 
-    const newProduct = {
-        id: newId,
-        name: name,
-        price: parseFloat(price),
-        category: category,
-        image: image,
-        description: description,
-        stock: parseInt(stock),
-        rating: 5 
-    };
+let product = {
+    productId: Date.now(), 
+    name: name,
+    price: price,
+    image: image,
+    description: description,
+    category: category,
+    stock: stock,
+    origin: origin
+}
 
     products.push(newProduct);
     saveProducts(products);

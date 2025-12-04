@@ -89,43 +89,23 @@ function saveProducts(list) {
 // ÜRÜN EKLEME / GÜNCELLEME
 // =============================
 function createProduct(name, price, category, image, description, stock) {
-
     let products = getProducts();
-    const editId = document.getElementById("productId").value;
 
-    // ÜRÜN OBJE ŞABLONU → ARTIK KESİNLİKLE productId!
     let product = {
-        productId: editId ? Number(editId) : Date.now(),   // TEK TİP ID
-        name,
-        price: Number(price),
-        category,
-        image,
-        description,
-        stock: Number(stock)
+        productId: Date.now(),  // Benzersiz ID
+        name: name,
+        price: parseFloat(price),
+        image: image,
+        description: description,
+        category: category,
+        stock: parseInt(stock) || 0
     };
 
-    if (editId) {
-        // GÜNCELLEME
-        const index = products.findIndex(p => p.productId == editId);
-        products[index] = product;
-
-        document.getElementById("messageArea").innerHTML =
-            `<div class="alert alert-success">Ürün başarıyla güncellendi.</div>`;
-
-        document.getElementById("saveButton").innerText = "Ürünü Kaydet";
-    } else {
-        // EKLEME
-        products.push(product);
-
-        document.getElementById("messageArea").innerHTML =
-            `<div class="alert alert-success">"${name}" başarıyla eklendi.</div>`;
-    }
-
+    products.push(product);
     saveProducts(products);
 
-    // FORM TEMİZLE
-    document.getElementById("productCreatorForm").reset();
-    document.getElementById("productId").value = "";
+    document.getElementById('messageArea').innerHTML =
+        `<div class="alert alert-success">"${name}" başarıyla kaydedildi.</div>`;
 
     renderProductList();
 }

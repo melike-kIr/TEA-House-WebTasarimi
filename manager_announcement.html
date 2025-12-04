@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tea House - Admin Panel</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <link href="css/admin_style.css" rel="stylesheet">
+
+</head>
+<body>
+
+        <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h3>Tea House Admin</h3>
+        <a href="#"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="manager_product.html"><i class="bi bi-box-seam me-2"></i> Ürün Yönetimi</a>
+        <a href="manager_announcement.html"><i class="bi bi-megaphone me-2"></i> Duyurular</a>
+        <a href="orders.html"><i class="bi bi-cart-check me-2"></i> Siparişler</a>
+        <a href="users.html"><i class="bi bi-people me-2"></i>Aboneler</a>
+        <a href="index.html"><i class="bi bi-box-arrow-right me-2"></i> Çıkış</a>
+    </div>
+<div class="content">
+    <h3 class="mt-5 mb-3">Duyuru Ekleme Ekranı</h3>
+
+ <div class="container py-5">
+    <h2 class="mb-4">Yeni Duyuru Ekle</h2>
+    
+    <form id="duyuruEkleFormu">
+        <div class="mb-3">
+            <label for="duyuruBaslik" class="form-label">Duyuru Başlığı</label>
+            <input type="text" class="form-control" id="duyuruBaslik" required maxlength="100">
+            <div class="form-text">Maksimum 100 karakter.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="duyuruIcerik" class="form-label">Duyuru İçeriği</label>
+            <textarea class="form-control" id="duyuruIcerik" rows="3" required maxlength="1000"></textarea>
+            <div class="form-text">Maksimum 1000 karakter.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="duyuruURL" class="form-label">Duyuru URL'si (İsteğe Bağlı)</label>
+            <input type="url" class="form-control" id="duyuruURL" placeholder="https://ornek.com/detay">
+            <div class="form-text">Kullanıcı bu duyuruya tıkladığında yönlendirilecek sayfa adresi.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="duyuruModal" class="form-label">Duyuru Modal İçeriği (İsteğe Bağlı)</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Duyuruyu Kaydet</button>
+    </form>
+
+    <div id="mesajAlani" class="mt-3"></div>
+
+    <hr class="my-5">
+
+    <h2 class="mb-4">Mevcut Duyurular</h2>
+    <div id="duyuruListesi">
+        <p class="text-muted">Duyurular yükleniyor...</p>
+    </div>
+</div>
+
+    </div>
+    </div>
+<script>
+// --- TEMEL LOCAL STORAGE FONKSİYONLARI ---
+
+// Local Storage'dan duyuruları çeker, yoksa boş dizi döndürür
+function getDuyurular() {
+    const duyurularJSON = localStorage.getItem('duyurular');
+    return duyurularJSON ? JSON.parse(duyurularJSON) : [];
+}
+
+// Duyurular dizisini Local Storage'a kaydeder
+function saveDuyurular(duyurular) {
+    localStorage.setItem('duyurular', JSON.stringify(duyurular));
+}
+
+// ----------------------------------------------------------------
+// --- DUYURU EKLEME İŞLEVİ (CREATE) ---
+// ----------------------------------------------------------------
+
+function duyuruEkle(baslik, icerik, url) {
+    const duyurular = getDuyurular();
+    const yeniId = duyurular.length > 0 ? duyurular[duyurular.length - 1].id + 1 : 1;
+    
+    const yeniDuyuru = {
+        id: yeniId,
+        baslik: baslik,
+        icerik: icerik,
+        tarih: new Date().toLocaleDateString('tr-TR'),
+        url: url || ''
+    };
+
+    duyurular.push(yeniDuyuru);
+    saveDuyurular(duyurular);
+
+    document.getElementById('mesajAlani').innerHTML = '<div class="alert alert-success">Duyuru başarıyla eklendi!</div>';
+    
+    document.getElementById('duyuruEkleFormu').reset(); 
+    renderDuyuruListesi(); 
+}
+
+// ----------------------------------------------------------------
+// --- DUYURU SİLME İŞLEVİ (DELETE) ---
+// ----------------------------------------------------------------
+
+function deleteDuyuru(id) {
+    const duyuruId = parseInt(id); 
+    
+    // Kullanıcı onayı al
+    if (confirm(`Gerçekten ID: ${duyuruId} olan duyuruyu silmek istiyor musunuz?`)) {
+        let duyurular = getDuyurular();
+        
+        // Silinmek istenen ID dışındaki tüm duyuruları filtrele (silme işlemi)
+        const updatedDuyurular = duyurular.filter(duyuru => duyuru.id !== duyuruId);
+
+        saveDuyurular(updatedDuyurular);
+        
+        document.getElementById('mesajAlani').innerHTML = `<div class="alert alert-danger">ID: ${duyuruId} başarıyla silindi.</div>`;
+        
+        // Listeyi yeniden yükle
+        renderDuyuruListesi(); 
+        
+        // Ana sayfadaki duyuruları da güncelle (Eğer index sayfanız bu fonksiyonu tanıyorsa)
+        if (typeof loadAnnouncementsCarousel === 'function') {
+            loadAnnouncementsCarousel();
+        }
+    }
+}
+
+// ----------------------------------------------------------------
+// --- DUYURULARI LİSTELEME İŞLEVİ (READ) ---
+// ----------------------------------------------------------------
+
+function renderDuyuruListesi() {
+    const duyurular = getDuyurular();
+    const listeAlani = document.getElementById('duyuruListesi');
+    
+    if (duyurular.length === 0) {
+        listeAlani.innerHTML = '<div class="alert alert-info">Henüz eklenmiş duyuru bulunmamaktadır.</div>';
+        return;
+    }
+
+    let html = `
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Başlık</th><th>İçerik</th><th>Tarih</th><th>URL</th><th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    const siraliDuyurular = [...duyurular].reverse();
+
+    siraliDuyurular.forEach(duyuru => {
+        html += `
+            <tr>
+                <td>${duyuru.id}</td>
+                <td>${duyuru.baslik}</td>
+                <td>${duyuru.icerik.substring(0, 50)}...</td> 
+                <td>${duyuru.tarih}</td>
+                <td>${duyuru.url ? `<a href="${duyuru.url}" target="_blank">GİT</a>` : '-'}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger delete-btn" data-id="${duyuru.id}">Sil</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    html += '</tbody></table>';
+    listeAlani.innerHTML = html;
+    
+    // Listenin yenilenmesinden hemen sonra silme dinleyicilerini bağla
+    attachDeleteListeners(); 
+}
+
+// ----------------------------------------------------------------
+// --- EYLEM DİNLEYİCİLERİNİ BAĞLAMA ---
+// ----------------------------------------------------------------
+
+function attachDeleteListeners() {
+    // Sadece 'delete-btn' sınıfına sahip butonları dinle
+    const deleteButtons = document.querySelectorAll('.delete-btn'); 
+    
+    deleteButtons.forEach(button => {
+        // Silme dinleyicisini bağla
+        button.addEventListener('click', (e) => {
+            const idToDel = e.target.getAttribute('data-id');
+            if (idToDel) {
+                deleteDuyuru(idToDel);
+            }
+        });
+    });
+}
+
+
+// ----------------------------------------------------------------
+// --- SAYFA BAŞLANGICI ---
+// ----------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderDuyuruListesi(); 
+
+    const form = document.getElementById('duyuruEkleFormu');
+    
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const baslik = document.getElementById('duyuruBaslik').value;
+            const icerik = document.getElementById('duyuruIcerik').value;
+            const url = document.getElementById('duyuruURL').value;
+            
+            if (baslik.trim() !== '' && icerik.trim() !== '') {
+                duyuruEkle(baslik, icerik, url);
+            } else {
+                 document.getElementById('mesajAlani').innerHTML = '<div class="alert alert-warning">Başlık ve içerik alanları boş bırakılamaz!</div>';
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
+
+    

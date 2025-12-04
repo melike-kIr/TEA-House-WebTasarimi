@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mağaza - Tea House</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar Start -->
+      <div id="navbar"></div>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-2 text-dark mb-4 animated slideInDown">Mağaza</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Ana Sayfa</a></li>
+                    <li class="breadcrumb-item text-dark" aria-current="page">Mağaza</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <div class="text-center mb-4">
+            <button class="btn btn-outline-primary filter-btn" data-filter="all">All</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="black">Black Tea</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="herbal-and-fruit-teas">Herbal and Fruit Teas</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="green-tea">Green Tea</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="oolong-tea">Oolong Tea</button>
+    </div>
+    <!-- Store Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p id="sub-title" class="fs-5 fw-medium fst-italic text-primary">Tüm Çay Çeşitlerimizi Keşfedin</p>
+                <h1 id="main-title" class="display-6">Aradığınız tüm lezzetler bir tık uzağınızda.</h1>
+            </div>
+
+            <div class="row g-4" id="product-container"></div>
+           
+                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="" class="btn btn-primary rounded-pill py-3 px-5">Daha Fazla Detay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Store End -->
+
+    <!-- Footer Start -->
+     <div id="footer"></div>
+    <!-- Footer End -->
+
+    <!-- Copyright Start -->
+    <div id="copyright"></div>
+    <!-- Copyright End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    <script src="js/newsletter.js"></script>
+    <script src="js/cart.js"></script>
+    
+    
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.getElementById("product-container");
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const mainTitle = document.getElementById("main-title");
+    const subTitle = document.getElementById("sub-title");
+
+    function getProducts() {
+        const json = localStorage.getItem("products");
+        return json ? JSON.parse(json) : [];
+    }
+
+    let products = getProducts();
+
+    render(products);
+    applyURLFilter();
+
+    const titleMap = {
+        "all": ["Tüm Çay Çeşitlerimizi Keşfedin", "Aradığınız tüm lezzetler bir tık uzağınızda."],
+        "black": ["Klasik Lezzet: Siyah Çaylar", "Güne enerji dolu bir başlangıç için ideal harmanlar."],
+        "green-tea": ["Zinde Kalmanın En Yeşil Yolu", "Antioksidan deposu, en taze yeşil çaylarımız."],
+        "herbal-and-fruit-teas": ["Doğanın Şifası ve Ferahlığı", "Kafeinsiz, dinlendirici ve aromatik bitki çayları."],
+        "oolong-tea": ["Oolong ile Eşsiz Deneyim", "Tat profilinde mükemmel bir denge."]
+    };
+
+    //  1) Ürünleri Al
+    function getProducts() {
+        const json = localStorage.getItem("products");
+        return json ? JSON.parse(json) : [];
+    }
+
+    //  2) Ürünleri Bas
+    function render(list) {
+        container.innerHTML = "";
+
+        if (!list.length) {
+            container.innerHTML = "<p class='text-center'>Ürün bulunamadı.</p>";
+            return;
+        }
+
+        list.forEach(p => {
+            const stars = "<small class='fa fa-star text-primary'></small>".repeat(p.rating);
+
+            container.innerHTML += `
+                <div class="col-lg-4 col-md-6">
+                    <div class="store-item position-relative text-center" data-category="${p.category}">
+                        <img class="img-fluid" src="${p.image}" alt="${p.name}">
+                        <div class="p-4">
+                            <div class="text-center mb-3">${stars}</div>
+                            <h4 class="mb-3">${p.name}</h4>
+                            <h4 class="text-primary">${p.price.toFixed(2)} ₺</h4>
+                        </div>
+                        <div class="store-overlay">
+                             <a href="product-detail.html?productId=${p.id}" 
+                            class="btn btn-primary rounded-pill py-2 px-4 m-2">
+                            Daha Fazla Keşfet
+                            </a>
+                            <a href="#" 
+                                        class="btn btn-dark rounded-pill py-2 px-4 m-2 add-to-cart"
+                                        data-name="${p.name}"
+                                        data-price="${p.price}"
+                                        data-image="${p.image}">
+                                        Sepete Ekle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // 3) Butona Tıklayınca Filtrele
+    filterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const f = btn.dataset.filter;
+
+            const filtered =
+                f === "all" ? products : products.filter(p => p.category === f);
+
+            render(filtered);
+            updateTitles(f);
+            highlight(f);
+            clearURL();
+        });
+    });
+
+    // 4) URL ile gelen filtreyi uygula
+    function applyURLFilter() {
+        const urlCategory = new URLSearchParams(window.location.search).get("category");
+        if (!urlCategory) return;
+
+        const filtered = products.filter(p => p.category === urlCategory);
+
+        render(filtered);
+        highlight(urlCategory);
+        updateTitles(urlCategory);
+    }
+
+    // Başlık güncelle
+    function updateTitles(filter) {
+        if (!titleMap[filter]) return;
+        mainTitle.textContent = titleMap[filter][0];
+        subTitle.textContent = titleMap[filter][1];
+    }
+
+    // Aktif butonu işaretle
+    function highlight(filter) {
+        filterButtons.forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.filter === filter);
+        });
+    }
+
+    // URL temizle
+    function clearURL() {
+        history.replaceState({}, "", window.location.pathname);
+    }
+
+});
+</script>
+
+  <script>
+    fetch("navbar.html")
+      .then(response => response.text())
+      .then(data => document.getElementById("navbar").innerHTML = data);
+
+    fetch("footer.html")
+       .then(response => response.text())
+       .then(data => document.getElementById("footer").innerHTML = data);
+
+    fetch("copyright.html")
+       .then(response => response.text())   
+       .then(data => document.getElementById("copyright").innerHTML = data);       
+  </script>
+
+</body>
+
+</html>

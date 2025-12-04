@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Tea House - Tea Shop Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /* Detay sayfasındaki resmin container'ını daha düzenli hale getirir */
+        .product-image-container {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="navbar"></div>
+
+<div class="container py-5">
+    <div class="row" id="productDetailContainer">
+        <div class="col-12 text-center text-muted">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Yükleniyor...</span>
+            </div>
+            <p class="mt-2">Ürün bilgileri yükleniyor...</p>
+        </div>
+    </div>
+</div>
+
+<div id="footer"></div>
+<div id="copyright"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+// --- LOCAL STORAGE'DAN VERİ ÇEKME FONKSİYONLARI ---
+
+// Local Storage'dan tüm ürünleri çeken fonksiyon
+function getProducts() {
+    // Ürün yönetim sayfanızdaki anahtarın 'products' olduğunu varsayıyoruz.
+    const productsJSON = localStorage.getItem('products'); 
+    return productsJSON ? JSON.parse(productsJSON) : [];
+}
+
+// URL'den parametre okuyan yardımcı fonksiyon
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+
+// --- ÜRÜN DETAYINI YÜKLEME İŞLEVİ ---
+function loadProductDetail() {
+    const container = document.getElementById('productDetailContainer');
+    // Sayfa yüklendiğinde, sadece ID bazlı aramayı kullanmak en güvenlisidir.
+    const productIdFromUrl = getUrlParameter('productId'); 
+    
+    if (!productIdFromUrl) {
+        container.innerHTML = '<div class="col-12 text-center alert alert-danger">Hata: Ürün ID\'si URL\'de bulunamadı. Lütfen ürün linkini kontrol edin.</div>';
+        return;
+    }
+
+    const productId = parseInt(productIdFromUrl);
+    const allProducts = getProducts(); 
+    
+    // ID ile eşleşen ürünü bul
+    const product = allProducts.find(p => p.id === productId);
+
+    if (!product) {
+        container.innerHTML = `<div class="col-12 text-center alert alert-warning">Üzgünüz, ID ${productId} olan ürün sistemde bulunamadı.</div>`;
+        return;
+    }
+
+    // 4. HTML içeriğini oluştur
+    // Not: Ürün yönetim sisteminizdeki tüm alanlar (category, rating vb.) varsayılan olarak null/boş gelebilir.
+    const detailHTML = `
+        <div class="col-md-6 mb-4 wow fadeIn" data-wow-delay="0.1s">
+            <div class="product-image-container">
+                <img src="${product.image}" class="img-fluid rounded" alt="${product.name}" style="max-height: 450px; object-fit: contain;">
+            </div>
+        </div>
+        <div class="col-md-6 wow fadeIn" data-wow-delay="0.3s">
+            <h1 class="display-5 fw-bold text-dark">${product.name}</h1>
+            
+            <p class="fs-4 text-primary mt-3">${product.price.toFixed(2)} ₺</p>
+            
+            <hr>
+
+            <p class="lead text-body">${product.description}</p>
+            
+            <div class="d-flex align-items-center mb-3">
+                <span class="badge bg-secondary me-3">Kategori: ${product.category || 'Belirtilmemiş'}</span>
+                <span class="badge ${product.stock > 0 ? 'bg-success' : 'bg-danger'}">Stok: ${product.stock} adet</span>
+            </div>
+            
+            ${product.rating ? `<div class="mb-3">
+                <i class="bi bi-star-fill text-warning"></i> ${product.rating} / 5
+            </div>` : ''}
+
+            <button 
+                class="btn btn-primary btn-lg mt-3 add-to-cart"
+                data-name="${product.name}"
+                data-price="${product.price}"
+                data-image="${product.image}"
+                ${product.stock <= 0 ? 'disabled' : ''}>
+                <i class="bi bi-cart-plus me-2"></i> ${product.stock > 0 ? 'Sepete Ekle' : 'Stokta Yok'}
+            </button>
+        </div>
+    `;
+
+    container.innerHTML = detailHTML;
+}
+
+// Sayfa yüklendiğinde detayları yükle
+document.addEventListener('DOMContentLoaded', loadProductDetail);
+</script>
+
+    <script>
+    fetch("navbar.html")
+      .then(response => response.text())
+      .then(data => document.getElementById("navbar").innerHTML = data);
+    fetch("footer.html")
+      .then(response => response.text())
+      .then(data => document.getElementById("footer").innerHTML = data);
+    fetch("copyright.html")
+      .then(response => response.text())
+      .then(data => document.getElementById("copyright").innerHTML = data);      
+    </script>
+
+<script src="js/cart.js"></script>
+  
+</body>
+</html>

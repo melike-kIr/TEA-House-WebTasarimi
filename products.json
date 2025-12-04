@@ -1,0 +1,111 @@
+[
+    {
+        "productId": 1,
+        "name": "Matcha Çayı",
+        "price": 85.00,
+        "image": "img/matcha.png",
+        "category": "green-tea",
+        "rating": 5,
+        "description": "Hasat edildikten sonra en kaliteli yapraklar buharla işlenerek oksidasyonu durdurulur ve taş değirmenlerde ince bir toz haline getirilir. Bu toz, bildiğimiz matcha çayıdır. Normal yeşil çay demlendiğinde, yaprağın sadece suya saldığı bileşenler alınırken, matcha tüketildiğinde yaprağın tamamı içilir"
+    },
+    {   
+        "productId": 2,
+        "name": "Sencha Çayı",
+        "price": 190.00,
+        "image": "img/sencha.png",
+        "category": "green-tea",
+        "rating": 5,
+        "description": "Sencha Tea, Japon kültürüne ait yılın ilk hasatları toplanarak elde edilen bir yeşil çaydır. İlkbahar aylarında Camellia Sinensis bitkisinin çay yaprakları toplanarak elde edilir. Hafif aroma ve tadı ile deniz yosununu andırmaktadır."
+    },
+    {
+        "productId": 3,
+        "name": "Kurutulmuş Portakal Çayı",
+        "price": 65.00,
+        "image": "img/orange.png",
+        "category": "herbal-and-fruit-teas",
+        "rating": 5,
+        "description": "Portakal çayı; portakalın hafif acımsı, ferahlatıcı aromasının, mayhoş, meyveli tatlarla yumuşatılmış akdeniz esintileri içeren meyve çayı harmanıdır."
+    },
+    {
+        "productId": 4,
+        "name": "Dian Hong",
+        "price": 150.00,
+        "image": "img/Dian Hong.png",
+        "category": "black",
+        "rating": 5,
+        "description": "Dian Hong, Çin'in Yunnan bölgesinde yetişen..."
+    },
+    {
+        "productId": 5,
+        "name": "Rize Çayı",
+        "price": 190.00,
+        "image": "img/rizeçayi.png",
+        "category": "black",
+        "rating": 5,
+        "description": "Rize'nin Çayeli bölgesinden özenle toplanan çay yapraklarından üretilmiş yumuşak içimli yeşil çay. Yeni toplanmış taze yaprakların o mis kokusunu bozmadan, doğal yöntemler ile üretilen yeşil çayımızı içtiğinizde damağınızda yumuşak bir bitkisel tat, yüzünüzde ise bir gülümseme kalacak."
+    },
+    {
+        "productId": 6,
+        "name": "Elma Çayı",
+        "price": 70.00,
+        "image": "img/appletea.png",
+        "category": "herbal-and-fruit-teas",
+        "rating": 5,
+        "description": "Elma meyvesi ve tarçın ile ekşilik kazanıp bir yandan portakal kabuğu ile tatlanan elma çayı, hibiskus ile cezbedici kırmızı rengine kavuşur. Hem sıcak hemde soğuk demlemede eşsiz bir lezzete sahip bu çayı soda ile de mutlaka deneyin. Elma çayı aroma verici kullanılmadan tamamen doğal meyve ve baharatlarla harmanlanmıştır."
+    },
+    {
+        "productId": 7,
+        "name": "Kuşburnu Çayı",
+        "price": 250.00,
+        "image": "img/kuşburnu.png",
+        "category": "herbal-and-fruit-teas",
+        "rating": 5,
+        "description": "Kuşburnu çayı, mayhoş meyvemsi tatlar içeren, hem ekşi hem tatlı bir meyve çayıdır. Hem soğuk hem sıcak olarak tüketilebilir. Kuşburnu çayı aroma verici kullanılmadan tamamen doğal meyve ve baharatlarla harmanlanmıştır."
+    },
+    {
+        "productId": 8,
+        "name": "Nilgiri",
+        "price": 210.00,
+        "image": "img/nilgiri.png",
+        "category": "black",
+        "rating": 5,
+        "description": "Nilgiri, Hindistan'ın güneyinde yetişen bir siyah çaydır. Hafif ve narin aromasıyla bilinir. Genellikle kahvaltı çayı olarak tercih edilir ve orta seviyede kafein içerir."
+    },
+    {
+        "productId": 9,
+        "name": "İrlanda Kahvaltı Çayı",
+        "price": 80.00,
+        "image": "img/irlanda.png",
+        "category": "black",
+        "rating": 5,
+        "description": "Irish Breakfast, Assam, Kenya ve Seylan çaylarının karışımından oluşur. Karamel esintili, hafif acılık içeren güçlü bir aroması vardır. Orta–yüksek düzeyde kafein içerir ve enerji verici bir çaydır."
+    },
+    {
+        "productId": 10,
+        "name": "Darjeeling Çayı",
+        "price": 70.00,
+        "image": "img/Darjeeling.png",
+        "category": "black",
+        "rating": 5,
+        "description": "Darjeeling çayı, Himalayalar'ın eteklerindeki Darjeeling bölgesinde yetiştirilir. 'Çayların Şampanyası' olarak bilinir. Misket üzümü benzeri aromasıyla oldukça özel bir tattır. Orta düzeyde kafein içerir."
+    },
+    {
+        "productId": 11,
+        "name": "Oolong Çayı",
+        "price": 100.00,
+        "image": "img/oolong.png",
+        "category": "oolong-tea",
+        "rating": 5,
+        "description": "Oolong çayı, yeşil çay ve siyah çay arasında bir işlem görür. %10–%80 oksidasyon oranıyla çeşitlilik gösterir. Hafif okside olanlar yeşil çaya, yüksek oksidasyonlu olanlar siyah çaya yakın tatlar sunar."
+    },
+    {
+        "productId": 12,
+        "name": "Kış Çayı",
+        "price": 100.00,
+        "image": "img/kiscayi.png",
+        "category": "herbal-and-fruit-teas",
+        "rating": 5,
+        "description": "Kış çayı; rooibos, elma, hibiskus, çilek, tarçın, karanfil, kuşburnu, aroma, nergis çiçeği ve vanilya karışımından oluşur. Soğuk havalar için ideal, aromatik ve doğal bir harmandır."
+    }
+]
+

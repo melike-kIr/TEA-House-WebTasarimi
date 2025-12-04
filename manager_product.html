@@ -83,39 +83,62 @@ function saveProducts(products) {
     localStorage.setItem('products', JSON.stringify(products));
 }
 
-// --- ÜRÜN EKLEME İŞLEVİ ---
+// --- ÜRÜN EKLEME / GÜNCELLEME FONKSİYONU ---
 
 function createProduct(name, price, category, image, description, stock) {
+
     let products = getProducts();
-    // ID oluşturma: Mevcut listedeki en büyük ID'den bir fazlası
-    const newId = products.length > 0 
-        ? Math.max(...products.map(p => p.id)) + 1 
-        : 1;
 
-let product = {
-    productId: Date.now(), 
-    
-    name: name,
-    price: price,
-    image: image,
-    description: description,
-    category: category,
-    stock: stock,
-    origin: origin
-}
+    // Eğer düzenleme yapılıyorsa ID al
+    const editId = document.getElementById('productId').value;
 
-    products.push(newProduct);
+    // -------------------------
+    // ÜRÜN NESNESİ OLUŞTURMA
+    // -------------------------
+
+    let product = {
+        id: editId ? Number(editId) : Date.now(),   // ID HER ZAMAN id OLMALI
+        name: name,
+        price: Number(price),
+        category: category,
+        image: image,
+        description: description,
+        stock: Number(stock)
+    };
+
+    // -------------------------
+    // GÜNCELLEME Mİ, EKLEME Mİ?
+    // -------------------------
+
+    if (editId) {
+        // var olan ürünü güncelle
+        const index = products.findIndex(p => p.id == editId);
+        products[index] = product;
+
+        document.getElementById('messageArea').innerHTML =
+            `<div class="alert alert-success">Ürün başarıyla güncellendi.</div>`;
+
+        document.getElementById('saveButton').innerText = "Ürünü Kaydet";
+    } 
+    else {
+        // yeni ürün ekleme
+        products.push(product);
+
+        document.getElementById('messageArea').innerHTML =
+            `<div class="alert alert-success">"${name}" başarıyla eklendi.</div>`;
+    }
+
     saveProducts(products);
 
-    document.getElementById('messageArea').innerHTML = `<div class="alert alert-success">"${name}" (ID: ${newId}) başarıyla kaydedildi.</div>`;
-    
-    // Formu temizle ve listeyi güncelle
-    document.getElementById('productCreatorForm').reset(); 
-    document.getElementById('productName').value = ''; 
+    // Form sıfırlansın
+    document.getElementById('productCreatorForm').reset();
+    document.getElementById('productId').value = ""; // düzenleme ID’si temizle
+
     renderProductList();
 }
 
-// --- ÜRÜN LİSTESİNİ GÖRÜNTÜLEME İŞLEVİ (Değişmedi) ---
+
+// --- ÜRÜN LİSTELEME ---
 
 function renderProductList() {
     const products = getProducts();
@@ -130,34 +153,36 @@ function renderProductList() {
 
     products.forEach(p => {
         html += `
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0">
-                    <img src="${p.image}" class="card-img-top" style="height: 220px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">${p.name}</h5>
-                        <p class="card-text text-muted">${p.price.toFixed(2)} ₺</p>
-                        <span class="badge bg-secondary mb-2">Stok: ${p.stock}</span>
-                        <div class="d-flex justify-content-between mt-3">
-                            <a href="product-detail.html?productId=${p.id}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i> Detay
-                            </a>
-                            <button class="btn btn-sm btn-warning" onclick="editProduct(${p.id})">
-                                <i class="bi bi-pencil"></i> Düzenle
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.id})">
-                                <i class="bi bi-trash"></i> Sil
-                            </button>
-                        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <img src="${p.image}" class="card-img-top" style="height: 220px; object-fit: contain;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">${p.name}</h5>
+                    <p class="card-text text-muted">${p.price} ₺</p>
+                    <span class="badge bg-secondary mb-2">Stok: ${p.stock}</span>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="product-detail.html?productId=${p.id}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> Detay
+                        </a>
+                        <button class="btn btn-sm btn-warning" onclick="editProduct(${p.id})">
+                            <i class="bi bi-pencil"></i> Düzenle
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.id})">
+                            <i class="bi bi-trash"></i> Sil
+                        </button>
                     </div>
                 </div>
             </div>
-        `;
+        </div>`;
     });
 
     html += `</div>`;
     listArea.innerHTML = html;
 }
 
+
+// --- ÜRÜN SİLME ---
 function deleteProduct(id) {
     if (!confirm("Bu ürünü silmek istediğine emin misin?")) return;
 
@@ -167,9 +192,10 @@ function deleteProduct(id) {
     renderProductList();
 }
 
+
+// --- ÜRÜN DÜZENLEME ---
 function editProduct(id) {
-    const products = getProducts();
-    const p = products.find(x => x.id === id);
+    const p = getProducts().find(x => x.id === id);
 
     document.getElementById("productId").value = p.id;
     document.getElementById("productName").value = p.name;
@@ -183,42 +209,25 @@ function editProduct(id) {
 }
 
 
+// --- FORM SUBMIT ---
+document.addEventListener("DOMContentLoaded", () => {
 
-// --- OLAY DİNLEYİCİLERİ (GÜNCELLENDİ) ---
+    renderProductList();
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Sayfa yüklendiğinde listeyi göster
-    renderProductList(); 
+    document.getElementById("productCreatorForm").addEventListener("submit", (e) => {
+        e.preventDefault();
 
-    const form = document.getElementById('productCreatorForm');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault(); 
+        const name = productName.value.trim();
+        const price = productPrice.value.trim();
+        const category = productCategory.value.trim();
+        const image = productImage.value.trim();
+        const description = productDescription.value.trim();
+        const stock = productStock.value.trim();
 
-        const name = document.getElementById('productName').value.trim();
-        const price = document.getElementById('productPrice').value.trim();
-        const category = document.getElementById('productCategory').value.trim();
-        const image = document.getElementById('productImage').value.trim();
-        const description = document.getElementById('productDescription').value.trim();
-        const stock = document.getElementById('productStock').value.trim();
-        
-        // --- GÖRSEL UZANTISI KONTROLÜ ---
-        const validExtensions = ['.png', '.jpg', '.jpeg'];
-        const isImageValid = validExtensions.some(ext => image.toLowerCase().endsWith(ext));
-        
-        if (name && price && image && description) {
-            
-            // Eğer URL formatı geçerli değilse VEYA uzantı geçerli değilse hata ver
-            if (!isImageValid) {
-                 document.getElementById('messageArea').innerHTML = '<div class="alert alert-danger">Görsel URL\'si sadece .png, .jpg veya .jpeg ile bitmelidir!</div>';
-                 return; // İşlemi durdur
-            }
-
-            createProduct(name, price, category, image, description, stock);
-        } else {
-             document.getElementById('messageArea').innerHTML = '<div class="alert alert-danger">Lütfen gerekli alanları (*) doldurunuz.</div>';
-        }
+        createProduct(name, price, category, image, description, stock);
     });
 });
+
 </script>
 </body>
 </html>

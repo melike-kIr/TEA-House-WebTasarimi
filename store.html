@@ -118,31 +118,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainTitle = document.getElementById("main-title");
     const subTitle = document.getElementById("sub-title");
 
-    function getProducts() {
-        const json = localStorage.getItem("products");
-        return json ? JSON.parse(json) : [];
-    }
+    let products = []; // JSON + Admin ürünlerinin birleşimi
 
-    let products = getProducts();
+    // 1) JSON'dan ürünleri çek
+    fetch("products.json")
+        .then(res => res.json())
+        .then(jsonProducts => {
 
-    render(products);
-    applyURLFilter();
+            // 2) Admin'in eklediği ürünleri LocalStorage'dan al
+            const adminProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-    const titleMap = {
-        "all": ["Tüm Çay Çeşitlerimizi Keşfedin", "Aradığınız tüm lezzetler bir tık uzağınızda."],
-        "black": ["Klasik Lezzet: Siyah Çaylar", "Güne enerji dolu bir başlangıç için ideal harmanlar."],
-        "green-tea": ["Zinde Kalmanın En Yeşil Yolu", "Antioksidan deposu, en taze yeşil çaylarımız."],
-        "herbal-and-fruit-teas": ["Doğanın Şifası ve Ferahlığı", "Kafeinsiz, dinlendirici ve aromatik bitki çayları."],
-        "oolong-tea": ["Oolong ile Eşsiz Deneyim", "Tat profilinde mükemmel bir denge."]
-    };
+            // 3) JSON + ADMIN ürünlerini birleştir
+            products = [...jsonProducts, ...adminProducts];
 
-    //  1) Ürünleri Al
-    function getProducts() {
-        const json = localStorage.getItem("products");
-        return json ? JSON.parse(json) : [];
-    }
+            // 4) Ürünleri ekrana bas
+            render(products);
 
-    //  2) Ürünleri Bas
+            // 5) URL'den kategori filtresi geldiyse uygula
+            applyURLFilter();
+        });
+
+    // ÜRÜNLERİ BASAN FONKSİYON
     function render(list) {
         container.innerHTML = "";
 
@@ -152,28 +148,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         list.forEach(p => {
-            const stars = "<small class='fa fa-star text-primary'></small>".repeat(p.rating);
+            const stars = "<small class='fa fa-star text-primary'></small>".repeat(5);
 
             container.innerHTML += `
                 <div class="col-lg-4 col-md-6">
-                    <div class="store-item position-relative text-center" data-category="${p.category}">
+                    <div class="store-item position-relative text-center">
                         <img class="img-fluid" src="${p.image}" alt="${p.name}">
                         <div class="p-4">
                             <div class="text-center mb-3">${stars}</div>
                             <h4 class="mb-3">${p.name}</h4>
-                            <h4 class="text-primary">${p.price.toFixed(2)} ₺</h4>
+                            <h4 class="text-primary">${p.price} ₺</h4>
                         </div>
                         <div class="store-overlay">
-                             <a href="product-detail.html?productId=${p.id}" 
-                            class="btn btn-primary rounded-pill py-2 px-4 m-2">
-                            Daha Fazla Keşfet
+                            <a href="product-detail.html?productId=${p.productId}" 
+                                class="btn btn-primary rounded-pill py-2 px-4 m-2">
+                                Detay
                             </a>
                             <a href="#" 
-                                        class="btn btn-dark rounded-pill py-2 px-4 m-2 add-to-cart"
-                                        data-name="${p.name}"
-                                        data-price="${p.price}"
-                                        data-image="${p.image}">
-                                        Sepete Ekle
+                                class="btn btn-dark rounded-pill py-2 px-4 m-2 add-to-cart"
+                                data-name="${p.name}"
+                                data-price="${p.price}"
+                                data-image="${p.image}">
+                                Sepete Ekle
                             </a>
                         </div>
                     </div>
@@ -182,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 3) Butona Tıklayınca Filtrele
+    // ------------ FİLTRE BUTONLARI ---------------
     filterButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const f = btn.dataset.filter;
@@ -191,13 +187,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 f === "all" ? products : products.filter(p => p.category === f);
 
             render(filtered);
-            updateTitles(f);
             highlight(f);
+            updateTitles(f);
             clearURL();
         });
     });
 
-    // 4) URL ile gelen filtreyi uygula
+    // ------------ URL FİLTRESİ --------------
     function applyURLFilter() {
         const urlCategory = new URLSearchParams(window.location.search).get("category");
         if (!urlCategory) return;
@@ -209,27 +205,34 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTitles(urlCategory);
     }
 
-    // Başlık güncelle
-    function updateTitles(filter) {
-        if (!titleMap[filter]) return;
-        mainTitle.textContent = titleMap[filter][0];
-        subTitle.textContent = titleMap[filter][1];
+    // Aktif kategori başlıkları
+    const titleMap = {
+        "all": ["Tüm Çay Çeşitlerimizi Keşfedin", "Aradığınız tüm lezzetler bir tık uzağınızda."],
+        "black": ["Klasik Lezzet: Siyah Çaylar", "Güne enerji dolu bir başlangıç için ideal harmanlar."],
+        "green-tea": ["Zinde Kalmanın En Yeşil Yolu", "Antioksidan deposu, en taze yeşil çaylarımız."],
+        "herbal-and-fruit-teas": ["Doğanın Şifası ve Ferahlığı", "Kafeinsiz, dinlendirici ve aromatik bitki çayları."],
+        "oolong-tea": ["Oolong ile Eşsiz Deneyim", "Tat profilinde mükemmel bir denge."]
+    };
+
+    function updateTitles(f) {
+        if (!titleMap[f]) return;
+        mainTitle.textContent = titleMap[f][0];
+        subTitle.textContent = titleMap[f][1];
     }
 
-    // Aktif butonu işaretle
     function highlight(filter) {
         filterButtons.forEach(btn => {
             btn.classList.toggle("active", btn.dataset.filter === filter);
         });
     }
 
-    // URL temizle
     function clearURL() {
         history.replaceState({}, "", window.location.pathname);
     }
 
 });
 </script>
+
 
   <script>
     fetch("navbar.html")

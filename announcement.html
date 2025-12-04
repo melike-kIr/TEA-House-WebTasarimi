@@ -96,25 +96,64 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
-    <script>
-    /* --- LOCAL STORAGE'DAN DUYURULARI ÇEK --- */
+<script>
+    /* --- MANUEL OLARAK EKLEDİĞİNİZ DUYURULAR (Kalıcı Veri) --- */
+    const manualDuyurular = [
+      { 
+        "id": 101, 
+        "baslik": "Kış İndirimleri Başladı! ❄️", 
+        "icerik": "Tüm siyah çay çeşitlerinde %20 indirim fırsatını kaçırmayın. Kampanya stoklarla sınırlıdır ve 15 Aralık'a kadar geçerlidir.", 
+        "tarih": "01.12.2025", 
+        "url": "products.html" 
+      },
+      { 
+        "id": 102, 
+        "baslik": "Yeni Mağazamız Açıldı 🎉", 
+        "icerik": "Ankara Çayyolu şubemiz hizmete girmiştir. İlk 100 müşterimize özel hediyelerimiz var! Adresimiz için iletişim sayfasına bakınız.", 
+        "tarih": "25.11.2025", 
+        "url": "contact.html" 
+      }
+      // Buraya istediğiniz kadar manuel duyuru ekleyebilirsiniz.
+    ];
+
+    /* --- YARDIMCI FONKSIYON: Local Storage'dan Çekme --- */
     function getDuyurular() {
         const json = localStorage.getItem("duyurular");
         return json ? JSON.parse(json) : [];
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const duyurular = getDuyurular();
+    /* --- ANA FONKSIYON: Duyuruları Yükle ve Göster --- */
+    function loadAndRenderDuyurular() {
         const container = document.getElementById("announcement-carousel");
+        
+        let duyurular = getDuyurular();
+
+        // Eğer Local Storage BOŞ ise (yani ilk kez açılıyorsa veya önbellek temizse)
+        if (!duyurular.length) {
+            console.log("Local Storage boş, manuel veriler Local Storage'a kaydediliyor...");
+            
+            // Manuel duyuruları Local Storage'a kaydet
+            localStorage.setItem("duyurular", JSON.stringify(manualDuyurular));
+            
+            // Kaydettiğimiz veriyi render et
+            duyurular = manualDuyurular;
+        }
 
         if (!duyurular.length) {
-            container.innerHTML = "<p class='text-center text-muted'>Henüz duyuru bulunmamaktadır.</p>";
+            container.innerHTML = "<p class='text-center text-muted'>Henüz güncel duyuru bulunmamaktadır.</p>";
             return;
         }
 
-        let html = "";
+        renderDuyurular(duyurular);
+    }
 
+
+    /* --- DUYURULARI EKRANA BASMA FONKSİYONU --- */
+    function renderDuyurular(duyurular) {
+        const container = document.getElementById("announcement-carousel");
+        let html = "";
+        
+        // Önceki kodunuzda olduğu gibi, duyuruları karusel yapısına dönüştür
         duyurular.forEach(d => {
             html += `
                 <div class="announcement-card rounded shadow-sm bg-white p-4 text-center">
@@ -133,12 +172,13 @@
 
         container.innerHTML = html;
 
+        // Carousel'i başlat
         $('.product-carousel').owlCarousel({
             autoplay: true,
             smartSpeed: 1200,
             dots: false,
             loop: true,
-            margin: 0,
+            margin: 20, 
             nav: true,
             navText : [
                 '<i class="fa fa-arrow-left"></i>',
@@ -150,12 +190,13 @@
                 992:{ items:3 }
             }
         });
+    }
 
-    });
+    /* --- DOMContentLoaded olduğunda yüklemeyi başlat --- */
+    document.addEventListener("DOMContentLoaded", loadAndRenderDuyurular);
 
-    /* --- MODAL AÇMA FONKSİYONU --- */
+    /* --- MODAL AÇMA FONKSİYONU (Aynı Kalır) --- */
     function openAnnouncement(data) {
-
         document.getElementById("modalBaslik").innerText = data.baslik;
         document.getElementById("modalIcerik").innerText = data.icerik;
         document.getElementById("modalTarih").innerText = "Tarih: " + data.tarih;
@@ -164,7 +205,7 @@
 
         if (data.url && data.url.trim() !== "") {
             urlBtn.classList.remove("d-none");
-            urlBtn.href = data.url;
+            urlBtn.href = data.url; 
         } else {
             urlBtn.classList.add("d-none");
         }
@@ -172,7 +213,7 @@
         const modal = new bootstrap.Modal(document.getElementById('duyuruModal'));
         modal.show();
     }
-    </script>
+</script>
 
     <!-- DUYURU DETAY MODAL -->
     <div class="modal fade" id="duyuruModal" tabindex="-1">

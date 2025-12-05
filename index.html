@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 function openAnnouncement(data) {
     document.getElementById("modalBaslik").innerText = data.baslik;
-    document.getElementById("modalIcerik").innerText = data.icerik;
+    document.getElementById("modalIcerik").innerHTML = data.icerik;
     document.getElementById("modalTarih").innerText = "Tarih: " + data.tarih;
 
     const urlBtn = document.getElementById("modalUrlBtn");

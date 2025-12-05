@@ -113,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const container = document.getElementById("productDetailContainer");
 
-    // URL'den productId al
     const productId = new URLSearchParams(window.location.search).get("productId");
 
     if (!productId) {
@@ -121,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // 1) JSON ürünlerini yükle
     fetch("products.json")
         .then(res => {
             if (!res.ok) throw new Error('products.json yüklenirken hata oluştu.');
@@ -129,23 +127,17 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(jsonProducts => {
 
-            // 2) Admin'in eklediği ürünleri al
             const adminProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-            // 3) JSON + Admin ürünlerini birleştir
             const allProducts = [...jsonProducts, ...adminProducts];
 
-            // 4) Doğru ürünü bul
-            // Dikkat: `p.productId` string ise, `productId` string olmalıdır. 
-            // Güvenli karşılaştırma için `toString()` kullanılmıştır.
-            const product = allProducts.find(p => p.productId.toString() === productId.toString());
+          const product = allProducts.find(p => p.productId == productId || p.productId == parseInt(productId));
 
             if (!product) {
                 container.innerHTML = `<div class="col-12"><div class="alert alert-warning">Aradığınız ürün bulunamadı.</div></div>`;
                 return;
             }
 
-            // 5) Ürün detayını ekrana bas (Güncellenmiş Modern Tasarım)
             container.innerHTML = `
                 <div class="col-md-6 wow zoomIn" data-wow-delay="0.1s">
                     <div class="product-image-box">
@@ -192,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </div>
             `;
-            // fadeIn animasyonunun çalışması için CSS sınıfını ekle
             document.querySelector('.product-detail-card').classList.add('fadeIn');
 
         })

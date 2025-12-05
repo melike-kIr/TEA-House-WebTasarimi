@@ -118,27 +118,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainTitle = document.getElementById("main-title");
     const subTitle = document.getElementById("sub-title");
 
-    let products = []; // JSON + Admin ürünlerinin birleşimi
+    let products = []; 
 
-    // 1) JSON'dan ürünleri çek
+    // JSON'dan ürünleri çek
     fetch("products.json")
         .then(res => res.json())
         .then(jsonProducts => {
 
-            // 2) Admin'in eklediği ürünleri LocalStorage'dan al
+            //  LocalStorage'dan al
             const adminProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-            // 3) JSON + ADMIN ürünlerini birleştir
             products = [...jsonProducts, ...adminProducts];
 
-            // 4) Ürünleri ekrana bas
             render(products);
 
-            // 5) URL'den kategori filtresi geldiyse uygula
             applyURLFilter();
         });
 
-    // ÜRÜNLERİ BASAN FONKSİYON
     function render(list) {
         container.innerHTML = "";
 
@@ -178,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ------------ FİLTRE BUTONLARI ---------------
+   
     filterButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const f = btn.dataset.filter;
@@ -193,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ------------ URL FİLTRESİ --------------
+
     function applyURLFilter() {
         const urlCategory = new URLSearchParams(window.location.search).get("category");
         if (!urlCategory) return;
@@ -205,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTitles(urlCategory);
     }
 
-    // Aktif kategori başlıkları
     const titleMap = {
         "all": ["Tüm Çay Çeşitlerimizi Keşfedin", "Aradığınız tüm lezzetler bir tık uzağınızda."],
         "black": ["Klasik Lezzet: Siyah Çaylar", "Güne enerji dolu bir başlangıç için ideal harmanlar."],

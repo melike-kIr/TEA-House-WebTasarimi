@@ -169,6 +169,30 @@
             </div>
         </div>
     </div>
+    <div class="container-xxl py-5">
+            <div class="container">
+                <div class="section-title text-center mx-auto mb-5" style="max-width: 500px;">
+                    <p class="fs-5 fw-medium fst-italic text-primary">Duyurular</p>
+                    <h1 class="display-6">Güncel Kampanya ve Bildirimler</h1>
+                </div>
+
+                <div id="announcement-carousel" class="owl-carousel"></div>
+
+                <div class="announcement-nav text-center mt-4">
+                <button id="prevAnnouncement" class="announcement-btn">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button id="nextAnnouncement" class="announcement-btn">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+            <br>
+                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="announcement.html" class="btn btn-primary rounded-pill py-3 px-5">Daha Fazla Duyuru Keşfet</a>
+                </div>
+        </div>
+        </div>
+    <!-- DUYURU DETAY MODAL -->
 <div class="modal fade" id="duyuruModal" tabindex="-1" aria-labelledby="modalBaslik" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
@@ -300,7 +324,6 @@
     <script src="js/main.js"></script>
     <script src="js/newsletter.js"></script>
     <script src="js/cart.js"></script>
-    <script src="js/announcement.js"></script>
 
 <script>
     fetch("navbar.html")

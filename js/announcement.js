@@ -1,7 +1,3 @@
-
-    // Global değişkenler
-    let allDuyurular = []; 
-
     /* --- MANUEL OLARAK EKLEDİĞİNİZ DUYURULAR (Kalıcı Veri) --- */
     const manualDuyurular = [
       { 
@@ -25,20 +21,21 @@
         "tarih": "10.06.2024",
         "url": ""
       },
-    {
-        "id": 104,
-        "baslik": "🌿 Bitki ve Meyve Çaylarında Kaçırılmayacak Fırsatlar!",
-        "icerik": "Tea House'un en sevilen bitki ve meyve çayları, bu hafta boyunca özel indirimlerle sizleri bekliyor! 🥳 <br> Doğal bitki karışımlarından ferahlatıcı meyve aromalarına kadar tüm ürünlerde sepette büyük avantajlar sizi karşılıyor. 🌠 <br> • Bağışıklığı destekleyen doğal karışımlar <br> • Kış aylarına özel sıcak ve aromatik çaylar <br> • %100 doğal içerikler, taze harmanlar <br> • Sadece kampanya süresince geçerli özel fiyatlar <br> Sağlıklı yaşam rutininize lezzet katmak için tam zamanı! ☕ <br> Sevdiğiniz çayları keşfedin, stoklarla sınırlı bu fırsatları kaçırmayın.",
-        "tarih": "05.05.2025",
-        "url": "store.html?category=herbal-and-fruit-teas"
-        },
       {
         "id": 105,
         "baslik": "📦🚚 Ücretsiz Kargo Kampanyası Başladı!",
         "icerik": "Tea House olarak Aralık ayı boyunca ☃️❄️ 250 TL ve üzeri tüm siparişlerde **kargo ücretsiz**! 🛍️✨ <br> Kampanya yalnızca yurt içi gönderiler için geçerlidir. Kaçırmayın! 💛✨",
         "tarih": "20.03.2026",
         "url": ""
-      }
+      },
+     {
+        "id": 104,
+        "baslik": "🌿 Bitki ve Meyve Çaylarında Kaçırılmayacak Fırsatlar!",
+        "icerik": "Tea House'un en sevilen bitki ve meyve çayları, bu hafta boyunca özel indirimlerle sizleri bekliyor! 🥳 <br> Doğal bitki karışımlarından ferahlatıcı meyve aromalarına kadar tüm ürünlerde sepette büyük avantajlar sizi karşılıyor. 🌠 <br> • Bağışıklığı destekleyen doğal karışımlar <br> • Kış aylarına özel sıcak ve aromatik çaylar <br> • %100 doğal içerikler, taze harmanlar <br> • Sadece kampanya süresince geçerli özel fiyatlar <br> Sağlıklı yaşam rutininize lezzet katmak için tam zamanı! ☕ <br> Sevdiğiniz çayları keşfedin, stoklarla sınırlı bu fırsatları kaçırmayın.",
+        "tarih": "05.05.2025",
+        "url": "store.html?category=herbal-and-fruit-teas"
+        }
+      // NOT: Eksik resim/dosyaUrl alanlarını eklemek için bu objeleri genişletebilirsiniz.
     ];
 
     /* --- YARDIMCI FONKSIYON: Local Storage'dan Çekme --- */
@@ -47,34 +44,53 @@
         return json ? JSON.parse(json) : [];
     }
     
+    // Tüm duyuruları (LS veya manuel) tek bir kaynaktan çekmek için yardımcı değişken
+    let allDuyurular = []; 
 
-    /* --- ANA FONKSIYON: Duyuruları Yükle ve Göster (loadAnnouncementsCarousel'un yeni versiyonu) --- */
-    function loadAnnouncementsCarousel() {
+
+    /* --- ANA FONKSIYON: Duyuruları Yükle ve Göster --- */
+    function loadAndRenderDuyurular() {
         const container = document.getElementById("announcement-carousel");
         
         let duyurular = getDuyurular();
 
-        // Eğer Local Storage BOŞ ise, manuel verileri kullan ve kaydet
+        // Eğer Local Storage BOŞ ise (yani ilk kez açılıyorsa veya önbellek temizse)
         if (!duyurular.length) {
+            // console.log("Local Storage boş, manuel veriler Local Storage'a kaydediliyor...");
             localStorage.setItem("duyurular", JSON.stringify(manualDuyurular));
             duyurular = manualDuyurular;
         }
         
+        // Tüm duyuruları global değişkene ata
         allDuyurular = duyurular;
 
-        if (!container) { return; }
-
-        if (allDuyurular.length === 0) {
-            container.innerHTML = `<div class="p-4 text-center text-muted">Şu anda güncel duyuru bulunmamaktadır.</div>`;
+        if (!duyurular.length) {
+            container.innerHTML = "<p class='text-center text-muted'>Henüz güncel duyuru bulunmamaktadır.</p>";
             return;
         }
+        
+        // jQuery hazır olduğunda veya hemen sonra render et
+        $(document).ready(function() {
+             renderDuyurular(allDuyurular);
+        });
+    }
 
+
+    /* --- DUYURULARI EKRANA BASMA FONKSİYONU --- */
+    function renderDuyurular(duyurular) {
+        const container = document.getElementById("announcement-carousel");
         let html = "";
         
+        // Önceki karoseli yok et
+        if (container.classList.contains('owl-loaded')) {
+            $('.product-carousel').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+            container.innerHTML = "";
+        }
+        
         // Duyuruları karusel yapısına dönüştür
-        allDuyurular.forEach(item => {
+        duyurular.forEach(d => {
             // Karoselde gösterilecek metni temizle (HTML ve fazla boşlukları kaldır)
-            const plainTextContent = item.icerik
+            const plainTextContent = d.icerik
                 .replace(/<br\s*\/?>/gi, ' ') // <br> etiketlerini boşlukla değiştir
                 .replace(/<\/?b>/gi, '')   // Bold etiketlerini kaldır
                 .replace(/<[^>]*>?/gm, ''); // Diğer tüm HTML etiketlerini kaldır
@@ -82,15 +98,14 @@
             // Metni güvenli bir şekilde kes
             const shortContent = plainTextContent.substring(0, 100) + (plainTextContent.length > 100 ? '...' : '');
 
-            // ID bazlı onclick kullanıldı (FIX 1 & 2)
             html += `
                 <div class="announcement-card rounded shadow-sm bg-white p-4 text-center">
-                    <h4 class="text-primary mb-2">${item.baslik}</h4>
-                    <p class="text-body mb-3">${shortContent}</p> 
-                    <small class="text-muted d-block mb-3">${item.tarih}</small>
+                    <h4 class="text-primary mb-2">${d.baslik}</h4>
+                    <p class="text-body mb-3">${shortContent}</p>
+                    <small class="text-muted d-block mb-3">${d.tarih}</small>
 
                     <button class="btn btn-primary rounded-pill px-4 py-2"
-                        onclick="openAnnouncementById(${item.id})"> 
+                        onclick="openAnnouncementById(${d.id})"> 
                         Detay
                     </button>
                 </div>
@@ -101,36 +116,23 @@
         container.classList.add('owl-carousel');
 
         // Carousel'i başlat
-        $("#announcement-carousel").owlCarousel({
-            autoplay: true, // Otomatik oynatma eklendi
+        $('.product-carousel').owlCarousel({
+            autoplay: true,
             smartSpeed: 1200,
             dots: false,
             loop: true,
             margin: 20, 
-            nav: true, // Navigasyon düğmeleri eklendi
+            nav: true,
             navText : [
                 '<i class="fa fa-arrow-left"></i>',
                 '<i class="fa fa-arrow-right"></i>'
             ],
             responsive: { 
                 0:{ items:1 },
-                768:{ items:2 },
+                576:{ items:2 },
                 992:{ items:3 }
             }
         });
-        
-        // Özel navigasyon düğmeleri (prevAnnouncement/nextAnnouncement) kaldırıldı, Owl Carousel'in kendi navigasyonu kullanılıyor.
-        // Eğer nav:true kullanmak istemezseniz, bu kısmı silip, aşağıdaki buton atamalarını tekrar ekleyebilirsiniz:
-        /*
-        const prevBtn = document.getElementById("prevAnnouncement");
-        const nextBtn = document.getElementById("nextAnnouncement");
-        if (prevBtn) {
-            prevBtn.onclick = () => $("#announcement-carousel").trigger("prev.owl.carousel");
-        }
-        if (nextBtn) {
-            nextBtn.onclick = () => $("#announcement-carousel").trigger("next.owl.carousel");
-        }
-        */
     }
 
     /* --- ID İLE DUYURU BULMA VE MODALI AÇMA FONKSİYONU --- */
@@ -143,38 +145,55 @@
             return;
         }
         
-        // Modalı açan fonksiyonu çağır (index.html'deki basit modal yapısını kullanır)
+        // Güncel duyuru objesi ile modalı aç
         openAnnouncement(data);
     }
     
-    // openAnnouncementById'nin global olarak erişilebilir olmasını sağla
-    window.openAnnouncementById = openAnnouncementById;
     
-    
-    /* --- MODAL AÇMA FONKSİYONU (index.html'deki mevcut basit yapıyla uyumlu) --- */
+    /* --- MODAL AÇMA FONKSİYONU --- */
     function openAnnouncement(data) {
+        // Statik alanları doldur
         document.getElementById("modalBaslik").innerText = data.baslik;
-        document.getElementById("modalIcerik").innerHTML = data.icerik;
+        document.getElementById("modalIcerik").innerHTML = data.icerik; // HTML içeriği için innerHTML kullanıldı
         document.getElementById("modalTarih").innerText = "Tarih: " + data.tarih;
 
+        // Resim Alanını Yönetme (Önceki yanıtta eklediğimiz mantık)
+        const imgContainer = document.getElementById("modalImageContainer");
+        const imgElement = document.getElementById("modalImage");
+        // data.resimUrl alanı duyuru objelerinde yok, bu yüzden d-none kalması normal
+        if (data.resimUrl && data.resimUrl.trim() !== "") {
+            imgElement.src = data.resimUrl;
+            imgContainer.classList.remove("d-none");
+        } else {
+            imgContainer.classList.add("d-none");
+        }
+
+        // Ek Dosyalar Alanını Yönetme
+        const filesContainer = document.getElementById("modalFilesContainer");
+        const fileLinksDiv = document.getElementById("modalFileLinks");
+        fileLinksDiv.innerHTML = ""; 
+        filesContainer.classList.add("d-none"); // Varsayılan olarak gizle
+
+        if (data.ekDosyalar && data.ekDosyalar.length > 0) {
+            // Ek dosya oluşturma mantığı buraya gelir
+            filesContainer.classList.remove("d-none");
+        }
+
+
+        // Detay Sayfası Butonunu Yönetme
         const urlBtn = document.getElementById("modalUrlBtn");
-        
         if (data.url && data.url.trim() !== "") {
             urlBtn.classList.remove("d-none");
-            urlBtn.href = data.url;
+            urlBtn.href = data.url; 
         } else {
             urlBtn.classList.add("d-none");
         }
 
-        // Modalı göster
+        // Modalı Göster
         const modal = new bootstrap.Modal(document.getElementById('duyuruModal'));
         modal.show();
     }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        // jQuery hazır olduğunda karoseli yükle
-        $(document).ready(function() {
-            loadAnnouncementsCarousel();
-        });
-    });
+    
+    
+    /* --- DOMContentLoaded olduğunda yüklemeyi başlat --- */
+    document.addEventListener("DOMContentLoaded", loadAndRenderDuyurular);

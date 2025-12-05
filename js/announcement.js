@@ -197,3 +197,5 @@
     
     /* --- DOMContentLoaded olduğunda yüklemeyi başlat --- */
     document.addEventListener("DOMContentLoaded", loadAndRenderDuyurular);
+
+

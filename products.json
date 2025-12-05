@@ -6,7 +6,7 @@
         "image": "img/matcha.png",
         "category": "green-tea",
         "stock": 50,
-        "description": "Hasat edildikten sonra en kaliteli yapraklar buharla işlenerek oksidasyonu durdurulur ve taş değirmenlerde ince bir toz haline getirilir. Bu toz, bildiğimiz matcha çayıdır. Normal yeşil çay demlendiğinde, yaprağın sadece suya saldığı bileşenler alınırken, matcha tüketildiğinde yaprağın tamamı içilir"
+        "description": "Hasadın en taze döneminde özenle toplanan genç çay yaprakları buharla nazikçe işlenir ve oksidasyonu tamamen durdurularak parlaklığını korur. Ardından geleneksel taş değirmenlerde saatler süren öğütme işlemiyle benzersiz bir yeşil toz haline gelir. Bu işlem, Matcha’ya karakteristik ipeksi dokusunu ve yoğun doğal aromasını kazandırır. Matcha içtiğinizde yalnızca demlenmiş suyu değil, yaprağın tamamını tükettiğiniz için vücudunuz antioksidanlar, amino asitler ve doğal enerjiyle dolup taşar. Meditasyon, odak ve zihin açıklığı sağlayan eşsiz bir çay ritüelidir."
     },
     {   
         "productId": 2,
@@ -15,7 +15,7 @@
         "image": "img/sencha.png",
         "category": "green-tea",
         "stock": 40,
-        "description": "Sencha Tea, Japon kültürüne ait yılın ilk hasatları toplanarak elde edilen bir yeşil çaydır. İlkbahar aylarında Camellia Sinensis bitkisinin çay yaprakları toplanarak elde edilir. Hafif aroma ve tadı ile deniz yosununu andırmaktadır."
+        "description": "Japonya’nın geleneksel çay kültürünü yansıtan Sencha, yılın ilkbaharında Camellia Sinensis yapraklarının dikkatle toplanmasıyla elde edilir. Yaprakların buharla durdurulan oksidasyonu sayesinde çayın aroması son derece temiz, taze ve doğaldır. Deniz yosununu andıran ferahlatıcı aroması, tatlı ve mineral notalarla birleşerek sofistike bir içim sunar. Hafif ama karakterli bu çay, zihinsel canlılık ve gün boyu tazelik arayanlar için mükemmel bir tercihtir."
     },
     {
         "productId": 3,
@@ -24,7 +24,7 @@
         "image": "img/orange.png",
         "category": "herbal-and-fruit-teas",
         "stock": 30,
-        "description": "Portakal çayı; portakalın hafif acımsı, ferahlatıcı aromasının, mayhoş, meyveli tatlarla yumuşatılmış akdeniz esintileri içeren meyve çayı harmanıdır."
+        "description": "Akdeniz’in güneşle olgunlaşmış portakallarından elde edilen bu çay, ferahlatıcı sitrus aromasını doğal meyve tonlarıyla harmanlar. Hafif acımsı portakal tadı, mayhoş meyve notalarıyla yumuşatılarak sıcak ve soğuk içimlerde zenginleşen bir karakter kazanır. Doğal kurutulmuş portakal kabukları, tazeliğini koruyarak her fincanda enerji ve canlılık hissi verir. Günün her anında ferahlık ve tazelik isteyenler için ideal bir seçenektir."
     },
     {
         "productId": 4,
@@ -33,7 +33,7 @@
         "image": "img/Dian Hong.png",
         "category": "black",
         "stock": 25,
-        "description": "Çin'in Yunnan eyaletinin bereketli dağlarından gelen bu özel siyah çay, yapraklarındaki göz alıcı altın sarısı tomurcuklarla fark yaratır. Her yudumda malt, bal ve tatlı patatesin eşsiz uyumunu keşfedin. Pürüzsüz içimi ve canlı kızıl dem rengiyle siyah çay deneyiminizi bir üst seviyeye taşıyın."
+        "description": "Yunnan Dağları’nın verimli ve mistik topraklarında yetişen Dian Hong, göz alıcı altın tomurcuklarıyla dünyanın en kaliteli siyah çayları arasında yer alır. Malt dokunuşuna eşlik eden bal ve tatlı patatesi andıran doğal tatlılıkla benzersiz bir aroma sunar. Demlendiğinde ortaya çıkan parlak kızıl renk, çayın zarafetini gözler önüne serer. Yumuşak içimi ve zengin aromasıyla siyah çaya yeni bir boyut kazandırır."
     },
     {
         "productId": 5,
@@ -42,7 +42,7 @@
         "image": "img/rizeçayi.png",
         "category": "black",
         "stock": 20,
-        "description": "Karadeniz'in eşsiz iklimi ve zengin topraklarında yetişen gerçek Rize çayı. Yoğun dem rengi ve sert, buruk tadıyla Türk çay kültürünün kalbini temsil eder. Günün her anına eşlik eden, katkısız ve doğal lezzetiyle sofralarınızın demirbaşı"
+        "description": "Karadeniz’in nemli, yağışlı ve bereketli bölgelerinden gelen gerçek Rize çayı, Türk çay kültürünün ruhunu taşır. Yoğun dem rengi, hafif buruk ama tok aroması ve karakteristik kokusuyla sofraların vazgeçilmezidir. Hiçbir katkı maddesi içermez; tamamen doğal ve safdır. Hem kahvaltı sofralarında hem de keyif anlarında güçlü ve dengeli bir lezzet sunar."
     },
     {
         "productId": 6,
@@ -51,7 +51,7 @@
         "image": "img/appletea.png",
         "category": "herbal-and-fruit-teas",
         "stock": 35,
-        "description": "Elma meyvesi ve tarçın ile ekşilik kazanıp bir yandan portakal kabuğu ile tatlanan elma çayı, hibiskus ile cezbedici kırmızı rengine kavuşur. Hem sıcak hemde soğuk demlemede eşsiz bir lezzete sahip bu çayı soda ile de mutlaka deneyin. Elma çayı aroma verici kullanılmadan tamamen doğal meyve ve baharatlarla harmanlanmıştır."
+        "description": "Taze elma parçalarının doğal ekşiliği, tarçının sıcak dokunuşu ve portakal kabuğunun hafif tatlı aromasıyla birleşerek kış aylarının vazgeçilmez içeceğini oluşturur. Hibiskustan gelen canlı kırmızı tonu bardakta dikkat çeker. Doğal bitkilerle harmanlanan bu karışım aroma verici içermez. Sıcak içimde dinginlik, soğuk demlemede ferahlık sağlayan eşsiz bir lezzet sunar. Soda ile tüketildiğinde dahi mükemmel bir meyveli içecek haline gelir."
     },
     {
         "productId": 7,
@@ -60,7 +60,7 @@
         "image": "img/kuşburnu.png",
         "category": "herbal-and-fruit-teas",
         "stock": 30,
-        "description": "Kuşburnu çayı, mayhoş meyvemsi tatlar içeren, hem ekşi hem tatlı bir meyve çayıdır. Hem soğuk hem sıcak olarak tüketilebilir. Kuşburnu çayı aroma verici kullanılmadan tamamen doğal meyve ve baharatlarla harmanlanmıştır."
+        "description": "Doğanın sunduğu en değerli meyvelerden biri olan kuşburnu, ekşi-tatlı dengesiyle güçlü ve keyifli bir aroma sunar. İçeriğindeki doğal C vitamini sayesinde hem ferahlık hem de canlılık hissi verir. Sıcak içildiğinde rahatlatıcı, soğuk içildiğinde tazeleyici bir deneyim sunar. Hiçbir aroma verici kullanılmadan tamamen doğal meyvelerden hazırlanmıştır."
     },
     {
         "productId": 8,
@@ -69,7 +69,7 @@
         "image": "img/nilgiri.png",
         "category": "black",
         "stock": 25,
-        "description": "Nilgiri, Hindistan'ın güneyinde yetişen bir siyah çaydır. Hafif ve narin aromasıyla bilinir. Genellikle kahvaltı çayı olarak tercih edilir ve orta seviyede kafein içerir."
+        "description": "Hindistan’ın güneyindeki Nilgiri dağlarından gelen bu özel siyah çay, hafif ve rafine aromasıyla bilinir. Yumuşak içimi sayesinde sabah kahvaltılarından kısa molalara kadar her ana uyum sağlar. Orta kafein oranı ile gün boyu canlılık sunar. Hem sade hem de sütle içime uygundur ve ferahlatıcı hafif notalarıyla siyah çay tutkunlarının favorilerindendir."
     },
     {
         "productId": 9,
@@ -78,7 +78,7 @@
         "image": "img/irlanda.png",
         "category": "black",
         "stock": 20,
-        "description": "Irish Breakfast, Assam, Kenya ve Seylan çaylarının karışımından oluşur. Karamel esintili, hafif acılık içeren güçlü bir aroması vardır. Orta–yüksek düzeyde kafein içerir ve enerji verici bir çaydır."
+        "description": "Assam, Kenya ve Seylan’ın güçlü çay yapraklarının özenle harmanlanmasıyla oluşturulan Irish Breakfast, karamelimsi aroması ve hafif acımsı gövdesiyle yoğun bir tat sunar. Yüksek kafein içeriği sayesinde sabahları enerjik bir başlangıç yapmanızı sağlar. Sütle birleştiğinde kremsi bir tat kazanırken, sade içimde aromatik gücüyle dikkat çeker."
     },
     {
         "productId": 10,
@@ -87,7 +87,7 @@
         "image": "img/Darjeeling.png",
         "category": "black",
         "stock": 15,
-        "description": "Darjeeling çayı, Himalayalar'ın eteklerindeki Darjeeling bölgesinde yetiştirilir. 'Çayların Şampanyası' olarak bilinir. Misket üzümü benzeri aromasıyla oldukça özel bir tattır. Orta düzeyde kafein içerir."
+        "description": "Himalayaların eteklerinde yetişen Darjeeling, çay dünyasında 'Çayların Şampanyası' olarak anılır. Kendine özgü misket üzümü aroması ve çiçeksi tonlarıyla zarif bir tat bütünlüğü sunar. Orta düzeyde kafein içerir ve günlük tüketime uygundur. Aromatik, rafine ve hafif tatlardan hoşlananlar için mükemmel bir çaydır."
     },
     {
         "productId": 11,
@@ -96,7 +96,7 @@
         "image": "img/oolong.png",
         "category": "oolong-tea",
         "stock": 20,
-        "description": "Oolong çayı, yeşil çay ve siyah çay arasında bir işlem görür. %10–%80 oksidasyon oranıyla çeşitlilik gösterir. Hafif okside olanlar yeşil çaya, yüksek oksidasyonlu olanlar siyah çaya yakın tatlar sunar."
+        "description": "Oolong, yeşil çay ile siyah çayın arasında yer alan benzersiz bir çay türüdür. %10’dan %80’e kadar değişen oksidasyon oranları sayesinde geniş bir aroma spektrumu sunar. Hafif oksidasyonlu çeşitler taze ve çiçeksi notalara sahipken, yüksek oksidasyonlu olanlar daha derin, karamelize ve odunsu tatlar sunar. Keşfetmeyi sevenler için ideal bir çay deneyimidir."
     },
     {
         "productId": 12,
@@ -105,7 +105,6 @@
         "image": "img/kiscayi.png",
         "category": "herbal-and-fruit-teas",
         "stock": 40,
-        "description": "Kış çayı; rooibos, elma, hibiskus, çilek, tarçın, karanfil, kuşburnu, aroma, nergis çiçeği ve vanilya karışımından oluşur. Soğuk havalar için ideal, aromatik ve doğal bir harmandır."
+        "description": "Tarçın, karanfil, kuşburnu, elma, hibiskus, vanilya ve nergis çiçeğinin özenle bir araya getirildiği aromatik bir karışımdır. Rooibosun yumuşaklığı, meyve notalarının tazeliği ve baharatların sıcaklığı birleşerek soğuk havalarda içinizi ısıtan zengin bir tat sunar. Doğal içeriğiyle hem dinlendirici hem de keyifli bir çay deneyimi sağlar. Dört mevsim içilebilen özel bir karışımdır."
     }
 ]
-

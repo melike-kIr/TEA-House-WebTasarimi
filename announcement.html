@@ -134,8 +134,7 @@
         "id": 104,
         "baslik": "🌿 Bitki ve Meyve Çaylarında Kaçırılmayacak Fırsatlar!",
         "icerik": "Tea House'un en sevilen bitki ve meyve çayları, bu hafta boyunca özel indirimlerle sizleri bekliyor! 🥳<br>" +
-                    "Doğal bitki karışımlarından ferahlatıcı meyve aromalarına kadar tüm ürünlerde sepette büyük avantajlar sizi karşılıyor. 🌠<br><br>" +
-                    "• Bağışıklığı destekleyen doğal karışımlar<br>" +
+                    "Doğal bitki karışımlarından ferahlatıcı meyve aromalarına kadar tüm ürünlerde sepette büyük avantajlar sizi karşılıyor. 🌠<br><br>" +"• Bağışıklığı destekleyen doğal karışımlar<br>" +
                     "• Kış aylarına özel sıcak ve aromatik çaylar<br>" +
                     "• %100 doğal içerikler, taze harmanlar<br>" +
                     "• Sadece kampanya süresince geçerli özel fiyatlar<br><br>" +
@@ -237,7 +236,7 @@
     /* --- MODAL AÇMA FONKSİYONU (Aynı Kalır) --- */
     function openAnnouncement(data) {
         document.getElementById("modalBaslik").innerText = data.baslik;
-        document.getElementById("modalIcerik").innerText = data.icerik;
+        document.getElementById("modalIcerik").innerHTML = data.icerik;
         document.getElementById("modalTarih").innerText = "Tarih: " + data.tarih;
 
         const urlBtn = document.getElementById("modalUrlBtn");
@@ -255,28 +254,42 @@
 </script>
 
     <!-- DUYURU DETAY MODAL -->
-    <div class="modal fade" id="duyuruModal" tabindex="-1">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="duyuruModal" tabindex="-1" aria-labelledby="modalBaslik" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
-          
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalBaslik"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
+            
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalBaslik">Duyuru Başlığı</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
 
-          <div class="modal-body">
-            <p id="modalIcerik" class="mb-3"></p>
-            <small class="text-muted" id="modalTarih"></small>
-          </div>
+            <div class="modal-body">
+                
+                <div id="modalImageContainer" class="mb-3 text-center d-none">
+                    <img id="modalImage" src="" alt="Duyuru Görseli" class="img-fluid rounded shadow-sm" style="max-height: 300px; width: auto; object-fit: cover;">
+                </div>
 
-          <div class="modal-footer">
-            <a id="modalUrlBtn" href="#" target="_blank" class="btn btn-primary d-none">Detay Sayfası</a>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-          </div>
+                <p id="modalIcerik" class="lead mb-4 text-dark"></p>
+
+                <div id="modalFilesContainer" class="mt-4 border-top pt-3 d-none">
+                    <h6><i class="bi bi-paperclip me-2 text-primary"></i> Ek Bilgiler ve Dosyalar</h6>
+                    <div id="modalFileLinks">
+                        </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <small class="text-muted" id="modalTarih">Tarih: --</small>
+                <div>
+                    <a id="modalUrlBtn" href="#" target="_blank" class="btn btn-success me-2 d-none"><i class="bi bi-link-45deg me-1"></i> Detay Sayfası / Kaynak</a>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
 
         </div>
-      </div>
     </div>
+</div>
 
     <script>
     /* Navbar + Footer yükleme */

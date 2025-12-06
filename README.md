@@ -1,7 +1,9 @@
 # Tea House – E-Ticaret: Hazır Şablon ile Tasarlanmış Web Sitesi
 **Bu çalışma, hazır ve duyarlı bir şablon kullanılarak çay satışı sektörüne yönelik modern ve işlevsel bir e-ticaret arayüzü oluşturulmasını amaçlamıştır.**
-
-**Projenin ana hedefi, geleneksel sunucu/veritabanı mimarisinden bağımsız bir yaklaşımla, verilerin kalıcılığını istemci tarafındaki Local Storage'a dayandıran bir Front-End İçerik Yönetim Sistemi (CMS) mantığı tasarlamaktır.**
+## Tasarım Yaklaşımı
+Proje, güncel web standartlarına uygun, temiz ve kullanıcı dostu bir deneyim sunmak amacıyla hazır ve duyarlı (responsive) bir Bootstrap şablonu kullanılarak tasarlanmıştır. Görsel sadelik ve markanın doğallığını yansıtan renk paleti ön planda tutulmuştur.
+## Mimarinin Ana Hedefi (CMS Mantığı)
+Projenin ana hedefi, geleneksel sunucu/veritabanı mimarisinden bağımsız bir yaklaşımla, verilerin kalıcılığını istemci tarafındaki Local Storage'a dayandıran bir Front-End İçerik Yönetim Sistemi (CMS) mantığı tasarlamaktır.
 
 ## Kullanılan Teknolojiler
 ### Front-end 

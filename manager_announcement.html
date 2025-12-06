@@ -20,6 +20,13 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
             border: 1px solid #dee2e6;
         }
+        .copyright-admin {
+            margin-left: 250px; 
+            background-color: #aa98ca7e; 
+            border-top: 1px solid #e9ecef;
+            padding: 1rem 0;
+            width: calc(100% - 250px);
+        }
     </style>
 </head>
 
@@ -84,7 +91,19 @@
 
     </div>
 
-<script>
+    <div class="container-fluid copyright-admin py-4">
+        <div class="container-fluid">
+            <div class="row px-5">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="fw-medium" href="#">Çay Satış Sitesi</a>, Melike KIR. Tüm Hakları Saklıdır.
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    Geliştirme: Melike KIR | Tema Kaynağı: <a class="fw-medium" href="https://themewagon.com">ThemeWagon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
 
 function getDuyurular() {
     const duyurularJSON = localStorage.getItem('duyurular');
@@ -172,7 +191,7 @@ function renderDuyuruListesi() {
             `<a href="${duyuru.url}" target="_blank" class="btn btn-sm btn-outline-success"><i class="bi bi-link"></i></a>` : 
             `<span class="text-muted">-</span>`;
             
-
+        // İçerik önizlemesindeki HTML etiketlerini (örneğin <br>) temizle
         const temizIcerik = duyuru.icerik
             .replace(/<br\s*\/?>/gi, ' ')
             .replace(/<[^>]*>?/gm, '');
@@ -234,5 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
 </body>
 </html>
